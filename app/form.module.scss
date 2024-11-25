@@ -1,0 +1,43 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    gap: 40px;
+    right: 50%;
+    left: 50%;
+    transform: translateY(50%);
+
+    &__columb{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    &__IT{
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    &__submit{
+        width: 50%;
+        height: 40px;
+    }
+    &__errors{
+        display: flex;
+        align-items: end;
+        position: absolute;
+        padding: 50px 0 0 130px;
+        font-size: 12px;
+    }
+    &__input{
+        position: relative;
+        z-index: 1;
+    }
+    &__topic{
+        font-size: 20px;
+    }
+}

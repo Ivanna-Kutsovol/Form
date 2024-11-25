@@ -1,101 +1,111 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useForm } from "react-hook-form";
+import styles from "../app/form.module.scss";
+
+export interface IForm {
+  name: string;
+  login: string;
+  email: string;
+  password: string;
+  birthDate: string;
+}
+
+function Form() {
+  const { register, handleSubmit, formState } = useForm<IForm>({
+    mode: 'onBlur',
+    defaultValues: {
+      name: '',
+      email: '',
+      login: '',
+      password: '',
+      birthDate: ''
+    }
+  });
+
+  const onSubmit = (data: IForm) =>{
+    console.log("submit", data)
+  }
+  
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <section className={styles.form__columb}>
+      <div className={styles.form__IT}>
+      <p className={styles.form__topic}>Name</p>
+      <input type="text" className={styles.form__input}
+        {...register('name', {
+          required: "Full name is required",
+          pattern: {
+            value: /^[A-Za-z]{1,19}$/,
+            message: 'Invalid name format'
+          }
+        })}
+      />
+      {formState.errors.name && <p className={styles.form__errors}>{formState.errors.name.message}</p>}
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <div className={styles.form__IT}>
+      <p className={styles.form__topic}> Email </p>
+        <input type="email" className={styles.form__input}
+          {...register('email', {
+            required: "Email is required",
+            pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: 'Invalid email address'
+          }
+        })}
+        />
+      {formState.errors.email && <p className={styles.form__errors}>{formState.errors.email.message}</p>}
+      </div>
+
+      <div className={styles.form__IT}>
+      <p className={styles.form__topic}>dd.mm.yy</p>
+      <input type="text" className={styles.form__input} placeholder="dd.mm.yy"
+      {...register('birthDate', {
+        required: 'Date of birth is required',
+        pattern: {
+          value: /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(19|20)(0[0-9]|10|11|12|13|14|15|16|17|18|19)$/,
+          message: 'Date must be in the format dd.mm.yyyy',
+        },
+      })}
+      />
+      {formState.errors.birthDate && <p className={styles.form__errors}>{formState.errors.birthDate.message}</p>}
+      </div>
+
+      <div className={styles.form__IT}>
+      <p className={styles.form__topic}>Login</p>
+      <input type="login" className={styles.form__input}
+        {...register('login', {
+          required: "Login is required",
+          minLength: {
+            value: 5,
+            message: 'Login must contain at least 5 characters'
+        }
+        })}/>
+      {formState.errors.login && <p className={styles.form__errors}>{formState.errors.login.message}</p>}
+      </div>
+
+      <div className={styles.form__IT}>
+      <p className={styles.form__topic}>Password</p>
+      <input type="password" className={styles.form__input}
+        {...register('password', {
+          required: 'Password is required',
+          minLength: {
+            value: 8,
+            message: 'Password must be at least 8 characters',
+          },
+          pattern: {
+            value: /^(?=.*[A-Z])(?=.*\d).+$/,
+            message: 'Contain at least one uppercase letter and one number',
+          },
+        })}/>
+      {formState.errors.password && <p className={styles.form__errors}>{formState.errors.password.message}</p>}
+      </div>
+      </section>
+
+      <button type="submit" className={styles.form__submit}> Submit</button>
+    </form>
   );
 }
+
+export default Form;
